@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prathmesh's 3D Portfolio | Web Developer & Designer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #45b7d1;
+            --light: #f8f9fa;
+            --dark: #343a40;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f0f0f0;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            transform: rotateX(20deg) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a i {
+            font-size: 1.1rem;
+        }
+
+        /* Sections */
+        section {
+            min-height: 100vh;
+            padding: 7rem 2rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            perspective: 1000px;
+            scroll-margin-top: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            filter: blur(50px);
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+            animation: bounce 2s infinite;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        p {
+            max-width: 700px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Profile Picture */
+        .profile-pic {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid var(--primary);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            margin-bottom: 2rem;
+        }
+
+        .profile-pic:hover {
+            transform: translateZ(30px) rotateY(20deg);
+            border-color: var(--secondary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 320px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card:hover {
+            transform: translateZ(30px) rotateY(15deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .card .icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            display: flex;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            margin: 0.5rem;
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, var(--accent), var(--secondary));
+            transform: translateZ(15px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Progress bars */
+        .skill-meter {
+            width: 100%;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .skill-level {
+            height: 10px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 1.5s ease;
+        }
+
+        /* Qualifications Section */
+        #qualifications { 
+            background: linear-gradient(135deg, #a8dadc, #457b9d);
+        }
+
+        .certificate-card {
+            max-width: 400px;
+            padding: 1.5rem;
+        }
+
+        .certificate-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+            border: 2px solid var(--light);
+        }
+
+        .certificate-card:hover .certificate-img {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .certificate-card h3 {
+            font-size: 1.3rem;
+            margin: 0.5rem 0;
+        }
+
+        .certificate-card p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        /* Specific Section Backgrounds */
+        #home { 
+            background: linear-gradient(135deg, #ffe66d, #f7d794);
+            justify-content: center;
+        }
+
+        #skills { 
+            background: linear-gradient(135deg, #95e1d3, #d8f3dc);
+        }
+
+        #projects { 
+            background: linear-gradient(135deg, #f7d794, #ffe66d);
+        }
+
+        #blog { 
+            background: linear-gradient(135deg, #4ecdc4, #95e1d3);
+        }
+
+        #contact { 
+            background: linear-gradient(135deg, #ff6b6b, #f7d794);
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            color: white;
+            background: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .card {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            .certificate-img {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#skills"><i class="fas fa-code"></i> Skills</a></li>
+            <li><a href="#projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <img src="profile photo.jpg" alt="Prathmesh Patil" class="profile-pic floating">
+        <h1>Prathmesh Patil</h1>
+        <h2>Student at MITAOE</h2>
+        <p>Currently in first year pursuing my degree in  Computer Engineering (Data science).I'm passionate about developing and operate new technologies. </p>
+        <div>
+            <a href="#projects" class="btn"><i class="fas fa-laptop-code"></i> View My Work</a>
+            <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> Contact Me</a>
+        </div>
+        <div class="social-links">
+            <a href="https://github.com/ritesh8376" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/ritesh-boje-12ba2b35b/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://x.com/RiteshBoje" class="social-link"><i class="fab fa-twitters"></i></a>
+            <a href="https://www.instagram.com/riteshboje/" class="social-link"><i class="fab fa-instagram"></i></a>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2>My Skills</h2>
+        <p>I'm developing a diverse skill set through personal projects. Here's what I bring to the table:</p>
+        
+        <div class="container">
+            <div class="card">
+                <div class="icon"><i class="fas fa-code"></i></div>
+                <h3>Frontend Development</h3>
+                <p>I'm learning to build responsive, accessible websites with modern HTML, CSS, and JavaScript</p>
+                <div class="skill-meter">
+                    <div class="skill-level" style="width: 90%"></div>
+                </div>
+                <p>HTML/CSS: 90% | JavaScript: 85% </p>
+            </div>
+            
+            <div class="card">
+                <div class="icon"><i class="fas fa-server"></i></div>
+                <h3>Linux OS</h3>
+                <p>I'm compatible with the use of linux operating system.I have created various programs using shellscript(Bash file).</p>
+                <div class="skill-meter">
+                    <div class="skill-level" style="width: 75%"></div>
+                </div>
+                <p>Bash commands:100% </p>
+            </div>
+            
+            <div class="card">
+                <div class="icon"><i class="fas fa-paint-brush"></i></div>
+                <h3>Python developer</h3>
+                <p>Using python in game develooment projects,for building app,websites and other data essential things.</p>
+                <div class="skill-meter">
+                    <div class="skill-level" style="width: 85%"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>Featured Projects</h2>
+        <p>Here are some of my proudest creations, combining technical skills with creative design:</p>
+        
+        <div class="container">
+            <div class="card">
+                <div class="icon"><i class="fas fa-gamepad"></i></div>
+                <h3>shooting game(browser game)</h3>
+                <p>It is a simple shooting game made using html and css attributes.</p>
+                <a href="shooting.html" class="btn" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+            </div>
+            
+            <div class="card">
+                <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3>Personal expense tracker</h3>
+                <p>It is created using linux OS Shellscript,in which you can manage your expense very easily.</p>
+            </div>
+            
+            <div class="card">
+                <div class="icon"><i class="fas fa-gamepad"></i></div>
+                <h3>Tic Tac Toe game</h3>
+                <p>I have created this game using python functions.  </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Let's Connect!</h2>
+        <p>Whether you have a project in mind or anything else.</p>
+        
+        <div class="container">
+            <div class="card" style="max-width: 600px;">
+                <h3>Get In Touch</h3>
+                <p>Currently available for freelance projects, internships, and collaboration opportunities.</p>
+                
+                <div style="text-align: left; margin: 2rem 0;">
+                    <p><i class="fas fa-envelope" style="color: var(--primary); margin-right: 10px;"></i> riteshboje2005@gmail.com</p>
+                    <p><i class="fas fa-phone" style="color: var(--primary); margin-right: 10px;"></i> 9699040882</p>
+                    <p><i class="fas fa-map-marker-alt" style="color: var(--primary); margin-right: 10px;"></i> Alandi, Pune</p>
+                </div>
+                
+                <form style="display: flex; flex-direction: column; gap: 1rem;">
+                    <input type="text" placeholder="Your Name" required style="padding: 1rem; border-radius: 10px; border: 1px solid #ddd;">
+                    <input type="email" placeholder="Your Email" required style="padding: 1rem; border-radius: 10px; border: 1px solid #ddd;">
+                    <textarea placeholder="Your Message" rows="4" required style="padding: 1rem; border-radius: 10px; border: 1px solid #ddd;"></textarea>
+                    <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="social-links" style="margin-top: 3rem;">
+            <a href="https://github.com/Prathmesh5256" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/ritesh-boje-12ba2b35b/" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://x.com/Prathmesh" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/riteshboje/" class="social-link"><i class="fab fa-instagram"></i></a>
+        </div>
+    </section>
+
+    <script>
+        // Animate skill bars on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillLevels = document.querySelectorAll('.skill-level');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const width = entry.target.style.width;
+                        entry.target.style.width = '0';
+                        setTimeout(() => {
+                            entry.target.style.width = width;
+                        }, 100);
+                    }
+                });
+            }, {threshold: 0.5});
+            
+            skillLevels.forEach(level => {
+                observer.observe(level);
+            });
+        });
+    </script>
+</body>
+</html>
